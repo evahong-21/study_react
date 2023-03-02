@@ -1,41 +1,47 @@
-const React = require('react');
-const { useState } = React;
+import React, { useRef, useState, useCallback } from 'react';
+import Try from './Try'
 
-const NumberBaseball = () => {
-  const [word, setWord] = useState('제로초');
-  const [value, setValue] = useState('');
-  const [result, setResult] = useState('');
-  const inputEl = React.useRef(null);
-
-  const onSubmitForm = (e) => {
-    e.preventDefault();
-    if (word[word.length - 1] === value[0]) {
-      setResult('딩동댕');
-      setWord(value);
-      setValue('');
-      inputEl.current.focus();
-    } else {
-      setResult('땡');
-      setValue('');
-      inputEl.current.focus();
+const getNumbers = () => {
+    const candidates = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const array = [];
+    for (let i = 0; i < 4; i += 1) {
+      const chosen = candidates.splice(Math.floor(Math.random() * (9 - i)), 1)[0];
+      array.push(chosen);
     }
+    return array;
   };
 
-  return (
-    <>
-      <div>{word}</div>
-      <form onSubmit={onSubmitForm}>
-        <input
-          ref={inputEl}
-          value={value}
-          onChange={(e) => setValue(e.currentTarget.value)}
-        />
-        <button>입력!</button>
-      </form>
-      <div>{result}</div>
-    </>
-  );
-};
 
-module.exports = NumberBaseball;
-//export default NumberBaseball;
+const NumberBaseball = () => {
+    const [result, setResult] = useState(getNumbers());
+    const [value, setValue] = useState('');
+    const [tries, setTries] = useState([]);
+    const [answer, setAnswer] = useState('');
+    const inputEl = useRef(null);
+
+
+    const onSubmitForm = useCallback((e)=>{
+        e.preventDefault();
+        console.log(result);
+        setTries([...tries, value]);
+        
+    })
+
+    const onChangeInput = useCallback((e)=> setValue(e.target.value), []);
+
+    return (
+        <>
+            <h1>NumberBaseball</h1>
+            <form onSubmit={onSubmitForm}>
+                <input maxLength={4} value={value} onChange={onChangeInput} />
+                <button>submit</button>
+            </form>
+            <div>tries: {tries.length}</div>
+            <ui>
+                {tries && tries.map((v, i) => {return(<Try value={v} index={i}/>)})}
+            </ui>
+        </>
+    );
+}
+
+export default NumberBaseball
