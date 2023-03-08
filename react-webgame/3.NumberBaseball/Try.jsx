@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 
-const Try = ({tryInfo}) => {
+const Try = memo(({tryInfo}) => {
     return (
         <li>
             <div>{tryInfo.try}</div>
@@ -8,5 +8,7 @@ const Try = ({tryInfo}) => {
         </li>
     )
 }
+)
 
+Try.displayName = 'Try';
 export default Try;
