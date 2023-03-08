@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, Component } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import Try from './Try'
 
 const getNumbers = () => {
@@ -11,51 +11,50 @@ const getNumbers = () => {
     return array;
   };
 
-class NumberBaseball extends Component {
-    state = {
-        result: '',
-        value: '',
-        answer: getNumbers(),
-        tries: [],
-    };
+const NumberBaseball = () => {
+    const [result, setResult] = useState('');
+    const [value, setValue] = useState('');
+    const [answer, setAnswer] = useState(getNumbers);
+    const [tries, setTries] = useState([]);
 
-    onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
-        if (this.state.value === this.state.answer.join('')) {
-            this.setState({result:'홈런',tries:[...this.state.tries, {try: this.state.value, result: '홈런!'}]})
+        if (value === answer.join('')) {
+            setResult('홈런');
+            setTries([...tries, {try:value, result:'홈런!'}]);
         } else {
-            if (this.state.tries.length >= 9) {
-                this.setState({result:'10번 넘게 탈락! 정답 :' + this.state.answer.join('')});
+            if (tries.length >= 9) {
+                setResult('10번 넘게 탈락! 정답 :' + answer.join(''));
                 alert('게임을 다시 시작합니다.');
-                this.setState({answer:getNumbers()});
+                setAnswer(getNumbers);
             } else {            
-                const arr = this.state.value.split('');
+                const arr = value.split('');
                 let strike = 0;
                 let ball = 0;
-                console.log(arr, this.state.answer)
-                arr.map((v,i)=>{this.state.answer[i]==Number(v) ? strike++ : this.state.answer.includes(Number(v)) ? ball++ : null});
-                this.setState({result:'땡!', tries:[...this.state.tries, {try: this.state.value, result:`스트라이크 : ${strike}, 볼: ${ball}`}]})
+                arr.map((v,i)=>{answer[i]==Number(v) ? strike++ : answer.includes(Number(v)) ? ball++ : null});
+                setResult('땡!');
+                setTries([...tries, {try: value, result:`스트라이크 : ${strike}, 볼: ${ball}`}])
             }
         }
-    };
+    }
+    );
 
-    onChangeForm = (e) => {
-        console.log(this.state.answer);
-        this.setState({
-            value: e.target.value,
-        });
-    };
+    const onChangeForm = useCallback((e) => {
+        setValue(e.target.value);
+    }
+    )
 
-    render() {
-        return (<><h1>{this.state.result}</h1>
-        <form onSubmit={this.onSubmitForm}>
-            <input maxLength={4} value={this.state.value} onChange={this.onChangeForm} /> 
+
+        return (
+        <>
+        <h1>{result}</h1>
+        <form onSubmit={onSubmitForm}>
+            <input maxLength={4} value={value} onChange={onChangeForm} /> 
         </form>
-        <div>시도 : {this.state.tries.length}</div>
+        <div>시도 : {tries.length}</div>
         <ul>
-            {this.state.tries.map((v,i)=>{return(<Try key={`${i+1}차 시도:`} value={v}/>)})}</ul>    
+            {tries.map((v,i)=>{return(<Try key={`${i+1}차 시도:`} tryInfo={v}/>)})}</ul>    
         </>)
-    };
 };
 
 export default NumberBaseball;
