@@ -27,7 +27,7 @@ class UseEffectClass extends Component {
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
         </button>
-        {this.state.count === 0 ? <Unmount /> : null}
+        {this.state.count === 5 ? <Unmount /> : null}
       </div>
     );
   }

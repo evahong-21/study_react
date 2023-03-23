@@ -7,7 +7,7 @@ class UseStateClass extends Component {
     this.state = {
       count: 0,
     };
-  } // state 변수 선언
+  }
 
   render() {
     return (
@@ -21,4 +21,4 @@ class UseStateClass extends Component {
   }
 }
 
-module.exports = UseStateClass; //state : { count : 0 } , this.setState()를 호출하는 버튼 클릭시 state.count 증가
+module.exports = UseStateClass;
