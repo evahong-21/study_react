@@ -13,5 +13,5 @@ const ReactDom = require("react-dom");
 // const UseEffectClass = require("./UseEffectClass");
 // ReactDom.render(<UseEffectClass />, document.querySelector("#root"));
 
-import App from "./customHook/App";
+import App from "./test1/App";
 ReactDom.render(<App />, document.querySelector("#root"));

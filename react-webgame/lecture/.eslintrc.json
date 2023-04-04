@@ -1,0 +1,19 @@
+{
+    "root": true,
+    "plugins": [
+        "prettier",
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "prettier",
+        "plugin:prettier/recommended",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "rules": {
+        "prettier/prettier": "error",
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off"
+      }
+}
