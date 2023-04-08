@@ -38,7 +38,7 @@ class ResponseCheckClass extends Component{
             this.setState((prevState)=>{
                 return {
                     state: 'waiting',
-                    mesage: '클릭해서 시작하세요',
+                    message: '클릭해서 시작하세요',
                     result: [...prevState.result, this.endTime - this.startTime]
                 }
             })
@@ -53,7 +53,7 @@ class ResponseCheckClass extends Component{
             null : 
             <>
             <div>
-                평균시간 : {this.state.result.reduce((a, c) => a+c) / this.state.result.length} ms
+                평균시간 : {this.state.result.reduce((a, c) => a+c) / result.length} ms
             </div>
             <button onClick={this.onReset}>리셋</button>
             </>
