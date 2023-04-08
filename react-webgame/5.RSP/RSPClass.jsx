@@ -79,7 +79,7 @@ class RSP extends Component {
     }
     setTimeout(() => {
       this.interval = setInterval(this.changeHand, 100);
-    }, 1000);
+    }, 3000);
   };
 
   render() {
