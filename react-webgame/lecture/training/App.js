@@ -1,44 +1,44 @@
-import React, { useState, useCallback } from 'react';
+import { useReducer } from 'react';
 
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [toDoList, setToDoList] = useState(['할일1']);
-  const [value, setValue] = useState('');
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'increment':
+      const { count, max } = state;
+      if (count < max) {
+        return { ...state, count: count + 1 };
+      } else {
+        alert(`MAX ${max} 값에 도달했습니다.`);
+        return { ...state };
+      }
+    case 'decrement':
+      return { ...state, count: state.count - 1 };
+    case 'setMax':
+      if (action.value < state.count) {
+        return { ...state, max: action.value, count: action.value };
+      } else {
+        return { ...state, max: action.value };
+      }
+    default:
+      throw new Error('Unsupported action type:', action.type);
+  }
+};
 
-  const openTodo = () => {
-    const inOpen = isOpen;
-    setIsOpen(!inOpen);
-  };
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0, max: 0 });
+  const { count, max } = state;
 
-  const onChangeForm = useCallback((e) => {
-    setValue(e.target.value);
-  });
-
-  const inputList = () => {
-    setToDoList([...toDoList, value]);
-  };
-
-  const hideTodo = () => {
-    return (
-      <div>
-        <input value={value} onChange={onChangeForm} />
-        <button onClick={() => inputList()}>추가</button>
-        <br />
-        {toDoList.map((v) => {
-          return <p>{v}</p>;
-        })}
-      </div>
-    );
-  };
+  const handleIncrement = () => dispatch({ type: 'increment' });
+  const handleDecrement = () => dispatch({ type: 'decrement' });
+  const handleMax = (value) => dispatch({ type: 'setMax', value: value });
 
   return (
     <>
-      <div>
-        <button onClick={() => openTodo()}>{isOpen ? '닫기' : '열기'}</button>
-        {isOpen ? hideTodo() : null}
-      </div>
+      MAX: <input type="number" value={max} onChange={(e) => handleMax(Number(e.target.value))} />
+      <button onClick={() => handleIncrement()}>+</button>
+      <button onClick={() => handleDecrement()}>-</button>
+      <p>{count}</p>
     </>
   );
 }
 
-export default App;
+export default Counter;
